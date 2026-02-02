@@ -105,123 +105,324 @@ CREATE TABLE Table_Name (
 
 **Question 1**
 --
--- Paste Question 1 here
+Insert all books from Out_of_print_books into Books
+
+Table attributes are ISBN, Title, Author, Publisher, YearPublished
+
+For example:
+
+Test	Result
+select * from Books;
+ISBN            Title           Author              Publisher      YearPublished
+--------------  --------------  ------------------  -------------  -------------
+978-1234567890  The Lost World  Arthur Conan Doyle  Vintage Books  1912
+978-0987654321  Gone with the   Margaret Mitchell   Macmillan      1936
+978-1122334455  Moby Dick       Herman Melville     Harper & Brot  1851
 
 ```sql
--- Paste your SQL code below for Question 1
+INSERT INTO books(ISBN, Title, Author, Publisher, YearPublished)
+SELECT ISBN, Title, Author, Publisher, YearPublished
+FROM Out_of_print_books;
+
 ```
 
 **Output:**
 
-![Output1](output.png)
+<img width="1245" height="950" alt="image" src="https://github.com/user-attachments/assets/801ff1ae-ac7b-4189-9bcc-78d0e2a74c6c" />
+
 
 **Question 2**
 ---
--- Paste Question 2 here
+Write a SQL query to Add a new column mobilenumber as number in the Student_details table.
+
+Sample table: Student_details
+
+ cid              name             type   notnull     dflt_value  pk
+---------------  ---------------  -----  ----------  ----------  ----------
+0                RollNo           int    0                       1
+1                Name             VARCH  1                       0
+2                Gender           TEXT   1                       0
+3                Subject          VARCH  0                       0
+4                MARKS            INT (  0                       0
+For example:
+
+Test	Result
+pragma table_info('Student_details');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           RollNo      int         0                       1
+1           Name        VARCHAR(10  1                       0
+2           Gender      TEXT        1                       0
+3           Subject     VARCHAR(30  0                       0
+4           MARKS       INT (3)     0                       0
+5           mobilenumb  number      0                       0
 
 ```sql
--- Paste your SQL code below for Question 2
+ALTER TABLE Student_details ADD mobilenumb number;
 ```
 
 **Output:**
 
-![Output2](output.png)
+<img width="1245" height="961" alt="image" src="https://github.com/user-attachments/assets/c122d551-95ce-4d21-9276-ba3af4755069" />
+
 
 **Question 3**
 ---
--- Paste Question 3 here
+Create a table named Shipments with the following constraints:
+ShipmentID as INTEGER should be the primary key.
+ShipmentDate as DATE.
+SupplierID as INTEGER should be a foreign key referencing Suppliers(SupplierID).
+OrderID as INTEGER should be a foreign key referencing Orders(OrderID).
+For example:
+
+Test	Result
+INSERT INTO Shipments (ShipmentID, ShipmentDate, SupplierID, OrderID) VALUES (2, '2024-08-03', 99, 1);
+Error: FOREIGN KEY constraint failed
+
 
 ```sql
--- Paste your SQL code below for Question 3
+CREATE TABLE Shipments (
+ShipmentID INTEGER,
+ShipmentDate DATE,
+SupplierID INTEGER,
+OrderID INTEGER,
+FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
+FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+PRIMARY KEY(ShipmentID)
+);
 ```
 
 **Output:**
 
-![Output3](output.png)
+<img width="1237" height="932" alt="image" src="https://github.com/user-attachments/assets/a1f20c6c-8aec-4533-b294-6d78a37cc589" />
+
 
 **Question 4**
 ---
--- Paste Question 4 here
+Create a new table named products with the following specifications:
+product_id as INTEGER and primary key.
+product_name as TEXT and not NULL.
+list_price as DECIMAL (10, 2) and not NULL.
+discount as DECIMAL (10, 2) with a default value of 0 and not NULL.
+A CHECK constraint at the table level to ensure:
+list_price is greater than or equal to discount
+discount is greater than or equal to 0
+list_price is greater than or equal to 0
+For example:
+
+Test	Result
+INSERT INTO products (product_id, product_name, list_price) VALUES (2, 'Product B', 50.00);
+SELECT * FROM products;
+product_id  product_name  list_price  discount
+----------  ------------  ----------  ----------
+2           Product B     50          0
 
 ```sql
--- Paste your SQL code below for Question 4
+CREATE TABLE products(
+product_id INTEGER PRIMARY KEY,
+product_name TEXT NOT NULL,
+list_price DECIMAL(10,2) NOT NULL,
+discount DECIMAL(10,2) NOT NULL DEFAULT 0,
+CHECK (list_price >= discount AND discount >=0 AND list_price >= 0)
+);
 ```
 
 **Output:**
 
-![Output4](output.png)
+<img width="1230" height="960" alt="image" src="https://github.com/user-attachments/assets/aa6bc9f6-b931-412e-95b9-9505bb4fb94c" />
+
 
 **Question 5**
 ---
--- Paste Question 5 here
+Create a table named Bonuses with the following constraints:
+BonusID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+BonusAmount as REAL should be greater than 0.
+BonusDate as DATE.
+Reason as TEXT should not be NULL.
+For example:
+
+Test	Result
+INSERT INTO Bonuses (BonusID, EmployeeID, BonusAmount, BonusDate, Reason) VALUES (1, 6, 1000.0, '2024-08-01', 'Outstanding performance');
+SELECT * FROM Bonuses;
+BonusID     EmployeeID  BonusAmount  BonusDate   Reason
+----------  ----------  -----------  ----------  -----------------------
+1           6           1000.0       2024-08-01  Outstanding performance
+
 
 ```sql
--- Paste your SQL code below for Question 5
+CREATE TABLE Bonuses(
+BonusID INTEGER PRIMARY KEY,
+EmployeeID INTEGER,
+BonusAmount REAL CHECK (BonusAmount>0),
+BonusDate DATE,
+Reason TEXT NOT NULL,
+FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
 ```
 
 **Output:**
 
-![Output5](output.png)
+<img width="1235" height="958" alt="image" src="https://github.com/user-attachments/assets/46842d65-1f18-410d-be35-3aa4b91e1ef8" />
+
 
 **Question 6**
 ---
--- Paste Question 6 here
+Create a table named Orders with the following constraints:
+OrderID as INTEGER should be the primary key.
+OrderDate as DATE should be not NULL.
+CustomerID as INTEGER should be a foreign key referencing Customers(CustomerID).
+For example:
+
+Test	Result
+INSERT INTO Customers (CustomerID, FirstName, LastName, Email) VALUES (1, 'Alice', 'Johnson', 'alice.johnson@example.com');
+INSERT INTO Orders (OrderID, OrderDate, CustomerID) VALUES (1, '2024-08-01', 1);
+select * from orders;
+OrderID     OrderDate   CustomerID
+----------  ----------  ----------
+1           2024-08-01  1
 
 ```sql
--- Paste your SQL code below for Question 6
+CREATE TABLE Orders(
+OrderID INTEGER PRIMARY KEY,
+OrderDate DATE NOT NULL,
+CustomerID INTEGER,
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
 ```
 
 **Output:**
 
-![Output6](output.png)
+<img width="1241" height="964" alt="image" src="https://github.com/user-attachments/assets/bc88dbb7-762c-4f79-9ca0-94a8371fed8d" />
+
 
 **Question 7**
 ---
--- Paste Question 7 here
+Insert the below data into the Customers table, allowing the City and ZipCode columns to take their default values.
+
+CustomerID  Name          Address
+----------  ------------  ----------
+304         Peter Parker  Spider St      
+
+Note: The City and ZipCode columns will use their default values.
+ 
+For example:
+
+Test	Result
+SELECT CustomerID, Name, Address
+FROM Customers;
+CustomerID  Name          Address
+----------  ------------  ----------
+304         Peter Parker  Spider St
+
 
 ```sql
--- Paste your SQL code below for Question 7
+INSERT INTO Customers (CustomerID,Name,Address)
+VALUES (304,'Peter Parker','Spider St');
 ```
 
 **Output:**
 
-![Output7](output.png)
+<img width="1244" height="966" alt="image" src="https://github.com/user-attachments/assets/a48ceba3-b9fb-4088-aa66-08a3424f46ca" />
+
 
 **Question 8**
 ---
--- Paste Question 8 here
+Write a SQL Query  to add attribute ISBN as varchar(30) and domain_dept as varchar(30) in the table 'books'
+
+ 
+
+ 
+
+For example:
+
+Test	Result
+pragma table_info('books');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           book_id     INT         0                       1
+1           title       VARCHAR(15  0                       0
+2           author      VARCHAR(10  0                       0
+3           genre       VARCHAR(50  0                       0
+4           publicatio  INT         0                       0
+5           ISBN        varchar(30  0                       0
+6           domain_dep  varchar(30  0                       0
 
 ```sql
--- Paste your SQL code below for Question 8
+ALTER TABLE books ADD ISBN varchar(30);
+ALTER TABLE books ADD domain_dept varchar(30);
 ```
 
 **Output:**
 
-![Output8](output.png)
+<img width="1239" height="966" alt="image" src="https://github.com/user-attachments/assets/e6880e4d-d6a2-4ba2-a356-1b1f7a3eccda" />
+
 
 **Question 9**
 ---
--- Paste Question 9 here
+Insert the following products into the Products table:
+
+Name        Category     Price       Stock
+----------  -----------  ----------  ----------
+Smartphone  Electronics  800         150
+Headphones  Accessories  200         300
+For example:
+
+Test	Result
+SELECT Name, Category, Price, Stock FROM Products;
+
+Name        Category     Price       Stock
+----------  -----------  ----------  ----------
+Smartphone  Electronics  800         150
+Headphones  Accessories  200         300
+
 
 ```sql
--- Paste your SQL code below for Question 9
+INSERT INTO Products(Name, Category, Price, Stock )
+VALUES ('Smartphone','Electronics',800,150);
+
+INSERT INTO Products(Name, Category, Price, Stock )
+VALUES ('Headphones','Accessories',200,300); 
 ```
 
 **Output:**
 
-![Output9](output.png)
+<img width="1234" height="970" alt="image" src="https://github.com/user-attachments/assets/addfea87-23d9-4780-a6e4-9543b04260ce" />
+
 
 **Question 10**
 ---
--- Paste Question 10 here
+Create a table named Customers with the following columns:
+
+CustomerID as INTEGER
+Name as TEXT
+Email as TEXT
+JoinDate as DATETIME
+For example:
+
+Test	Result
+pragma table_info('Customers');
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           CustomerID  INTEGER     0                       0
+1           Name        TEXT        0                       0
+2           Email       TEXT        0                       0
+3           JoinDate    DATETIME    0                       0
+
 
 ```sql
--- Paste your SQL code below for Question 10
+CREATE TABLE Customers(
+CustomerID INTEGER,
+Name TEXT,
+Email TEXT,
+JoinDate DATETIME
+);
 ```
 
 **Output:**
 
-![Output10](output.png)
+<img width="1239" height="965" alt="image" src="https://github.com/user-attachments/assets/05114b02-8e03-44c4-84df-a75e8c2daa20" />
+
 
 
 ## RESULT
